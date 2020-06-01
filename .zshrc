@@ -1,9 +1,8 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/mybin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/toyokura-tadashi/.oh-my-zsh"
+export ZSH="/Users/tadashi.toyokura/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -27,8 +26,14 @@ ZSH_THEME="robbyrussell"
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
 
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -64,7 +69,15 @@ ZSH_THEME="robbyrussell"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git docker terraform
+  git
+  docker
+  docker-compose
+  rbenv
+  bundler
+  gem
+  ruby
+  kubectl
+  aws
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -73,21 +86,15 @@ source $ZSH/oh-my-zsh.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
-# You may need to manually set your language environment
-export LANG=en_US.UTF-8
-
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -95,18 +102,25 @@ export LANG=en_US.UTF-8
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+alias zshconfig="nvim ~/.zshrc"
+alias ohmyzsh="nvim ~/.oh-my-zsh"
 
+# my configurations
+# mynvim () {
+#     docker run -it --rm -v $(pwd):/usr/src/nvim wengtadashi/dockerized-nvim:latest
+# }
+# mynvimruby () {
+#     docker run -it --rm -v $(pwd):/usr/src/nvim wengtadashi/dockerized-nvim-ruby:latest
+# }
+# rbenv
+eval "$(rbenv init -)"
+
+# fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# for docker-machine auto completion
-fpath=(~/.zsh/completion $fpath)
-autoload -Uz compinit && compinit -i
+# pyenv
 
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /Users/toyokura-tadashi/mybin/terraform terraform
-
-mynvim () {
-    docker run -it --rm -v $(pwd):/usr/src/nvim wengtadashi/dockerized-nvim:latest
-}
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+eval "$(pyenv virtualenv-init -)"
